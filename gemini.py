@@ -107,7 +107,7 @@ def generate_content(context):
     GEMINI_TIMEOUT = 3 * 60 * 1000 # 3 minutes
     client = genai.Client(api_key=api_key, http_options=genai.types.HttpOptions(timeout=GEMINI_TIMEOUT, retry_options=genai.types.HttpRetryOptions()))
     response = client.models.generate_content(
-        model="gemini-3-flash-preview",
+        model="gemini-3.5-flash",
         config=genai.types.GenerateContentConfig(
             system_instruction=system_instruction,
             response_mime_type="application/json",
