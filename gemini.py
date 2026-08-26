@@ -108,6 +108,8 @@ MODELS = [
     "gemini-3-flash-preview",
     "gemini-3.5-flash-lite",
     "gemini-3.1-flash-lite",
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-lite",
 ]
 
 
@@ -125,6 +127,7 @@ def generate_content(context, model=None):
     api_key=random.choice(os.getenv('GEMINI_API_KEYS').split(','))
     GEMINI_TIMEOUT = 3 * 60 * 1000 # 3 minutes
     client = genai.Client(api_key=api_key, http_options=genai.types.HttpOptions(timeout=GEMINI_TIMEOUT, retry_options=genai.types.HttpRetryOptions()))
+    print(model)
     response = client.models.generate_content(
         model=model,
         config=genai.types.GenerateContentConfig(
