@@ -101,13 +101,29 @@ For time-sensitive user queries that require up-to-date information, you MUST fo
 </final_instruction>
 """
 
-@retry(stop=stop_after_attempt(2), after=print)
-def generate_content(context):
+MODELS = [
+    "gemini-3.7-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash-lite",
+]
+
+
+def select_model(retry_state):
+    index = retry_state.attempt_number - 1
+    retry_state.kwargs["model"] = MODELS[index]
+
+    print(
+        f"試行 {retry_state.attempt_number}: "
+        f"{MODELS[index]}"
+    )
+
+@retry(stop=stop_after_attempt(2), before=select_model, after=print)
+def generate_content(context, model=None):
     api_key=random.choice(os.getenv('GEMINI_API_KEYS').split(','))
     GEMINI_TIMEOUT = 3 * 60 * 1000 # 3 minutes
     client = genai.Client(api_key=api_key, http_options=genai.types.HttpOptions(timeout=GEMINI_TIMEOUT, retry_options=genai.types.HttpRetryOptions()))
     response = client.models.generate_content(
-        model="gemini-3.7-flash",
+        model=model,
         config=genai.types.GenerateContentConfig(
             system_instruction=system_instruction,
             response_mime_type="application/json",
@@ -116,7 +132,7 @@ def generate_content(context):
         ),
         contents=contents.format(context=context, current_time=datetime.datetime.now().astimezone().isoformat())
     )
-    print(response)
+    print(model, response)
 
     if response.text is None:
         print('response.text is None')
