@@ -117,7 +117,7 @@ def select_model(retry_state):
         f"{MODELS[index]}"
     )
 
-@retry(stop=stop_after_attempt(2), before=select_model, after=print)
+@retry(stop=stop_after_attempt(3), before=select_model, after=print)
 def generate_content(context, model=None):
     api_key=random.choice(os.getenv('GEMINI_API_KEYS').split(','))
     GEMINI_TIMEOUT = 3 * 60 * 1000 # 3 minutes
