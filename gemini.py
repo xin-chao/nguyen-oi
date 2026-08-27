@@ -122,7 +122,7 @@ def select_model(retry_state):
 def generate_content(context, model=None):
     api_key=random.choice(os.getenv('GEMINI_API_KEYS').split(','))
     GEMINI_TIMEOUT = 100 * 1000 # 100 seconds
-    client = genai.Client(api_key=api_key, http_options=genai.types.HttpOptions(timeout=GEMINI_TIMEOUT, retry_options=genai.types.HttpRetryOptions()))
+    client = genai.Client(api_key=api_key, http_options=genai.types.HttpOptions(timeout=GEMINI_TIMEOUT, retry_options=genai.types.HttpRetryOptions(attempts=4)))
     chat = client.chats.create(
         model=model,
         config=genai.types.GenerateContentConfig(
