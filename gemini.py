@@ -123,16 +123,16 @@ def generate_content(context, model=None):
     api_key=random.choice(os.getenv('GEMINI_API_KEYS').split(','))
     GEMINI_TIMEOUT = 3 * 60 * 1000 # 3 minutes
     client = genai.Client(api_key=api_key, http_options=genai.types.HttpOptions(timeout=GEMINI_TIMEOUT, retry_options=genai.types.HttpRetryOptions()))
-    response = client.models.generate_content(
+    chat = client.chats.create(
         model=model,
         config=genai.types.GenerateContentConfig(
             system_instruction=system_instruction,
             response_mime_type="application/json",
             response_schema=response_schema,
             tools=[{"url_context": {}}]
-        ),
-        contents=contents.format(context=context, current_time=datetime.datetime.now().astimezone().isoformat())
+        )
     )
+    response = chat.send_message(contents.format(context=context, current_time=datetime.datetime.now().astimezone().isoformat()))
     print(model, response)
 
     if response.text is None:
