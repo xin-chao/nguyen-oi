@@ -116,18 +116,13 @@ MODELS = [
 def select_model(retry_state):
     index = retry_state.attempt_number - 1
     retry_state.kwargs["model"] = MODELS[index]
-
-    print(
-        f"試行 {retry_state.attempt_number}: "
-        f"{MODELS[index]}"
-    )
+    print(f"Attempt {retry_state.attempt_number}: {MODELS[index]}")
 
 @retry(stop=stop_after_attempt(len(MODELS)), before=select_model, after=print)
 def generate_content(context, model=None):
     api_key=random.choice(os.getenv('GEMINI_API_KEYS').split(','))
     GEMINI_TIMEOUT = 3 * 60 * 1000 # 3 minutes
     client = genai.Client(api_key=api_key, http_options=genai.types.HttpOptions(timeout=GEMINI_TIMEOUT, retry_options=genai.types.HttpRetryOptions()))
-    print(model)
     response = client.models.generate_content(
         model=model,
         config=genai.types.GenerateContentConfig(
