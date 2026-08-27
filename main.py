@@ -46,10 +46,8 @@ if entries:
     print('ENTRIES:', len(entries))
     context = json.dumps(entries[:20], ensure_ascii=False)
     response, failed_urls = gemini.generate_content(context)
-    print('response.text', response.text)
-    comments = json.loads(response.text)
     urls = [entry['url'] for entry in entries]
-    for comment in comments:
+    for comment in response.parsed:
         if comment['url'] not in urls:
             print('NOT_IN_URLS:', comment['url'])
             continue
