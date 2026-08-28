@@ -108,8 +108,6 @@ MODELS = [
     "gemini-3-flash-preview",
     "gemini-3.5-flash-lite",
     "gemini-3.1-flash-lite",
-    "gemini-2.5-flash",
-    "gemini-2.5-flash-lite",
 ]
 
 
@@ -129,6 +127,9 @@ def generate_content(context, model=None):
             system_instruction=system_instruction,
             response_mime_type="application/json",
             response_schema=response_schema,
+            thinking_config=genai.types.ThinkingConfig(
+                thinking_level=genai.types.ThinkingLevel.HIGH,
+            ),
             tools=[{"url_context": {}}]
         )
     )
