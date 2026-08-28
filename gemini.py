@@ -130,7 +130,7 @@ def generate_content(context, model=None):
             thinking_config=genai.types.ThinkingConfig(
                 thinking_level=genai.types.ThinkingLevel.HIGH,
             ),
-            tools=[{"url_context": {}}, {"google_search": {}}]
+            tools=[{"url_context": {}}]
         )
     )
     response = chat.send_message(contents.format(context=context, current_time=datetime.datetime.now().astimezone().isoformat()))
