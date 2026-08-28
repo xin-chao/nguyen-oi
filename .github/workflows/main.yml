@@ -13,4 +13,4 @@ jobs:
           GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
           HATENA_TOKEN: ${{ secrets.HATENA_TOKEN }}
           KV_ORIGIN: ${{ secrets.KV_ORIGIN }}
-          PYTHONUNBUFFERED: "1"
+          PYTHONUNBUFFERED: 1
