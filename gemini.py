@@ -136,9 +136,9 @@ def generate_content(context, model=None):
     response = chat.send_message(contents.format(context=context, current_time=datetime.datetime.now().astimezone().isoformat()))
     print(model, response)
 
-    if response.text is None:
-        print('response.text is None')
-        raise Exception("response.text is None")
+    if response.parsed is None:
+        print('response.parsed is None')
+        raise Exception("response.parsed is None")
     print(response.candidates[0].url_context_metadata)
 
     failed_urls = []
